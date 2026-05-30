@@ -14,12 +14,8 @@
 // --- Memória ---
 #define LV_MEM_SIZE         (48U * 1024U)
 
-// --- Tick via millis() - padrão oficial ---
-#define LV_TICK_CUSTOM      1
-#if LV_TICK_CUSTOM
-    #define LV_TICK_CUSTOM_INCLUDE  "Arduino.h"
-    #define LV_TICK_CUSTOM_SYS_TIME_EXPR (millis())
-#endif
+// --- Tick manual (lv_tick_inc no loop) ---
+#define LV_TICK_CUSTOM      0
 
 // --- Performance ---
 #define LV_DISP_DEF_REFR_PERIOD     30

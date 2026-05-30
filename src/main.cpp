@@ -158,18 +158,19 @@ static void criar_interface() {
     lv_obj_set_style_radius(bg, 0, LV_PART_MAIN);
     lv_obj_align(bg, LV_ALIGN_CENTER, 0, 0);
 
+    // Logo — visível IMEDIATAMENTE (sem animação, pra testar)
     logo_obj = lv_img_create(lv_scr_act());
     lv_img_set_src(logo_obj, &logo_dsc);
-    lv_obj_align(logo_obj, LV_ALIGN_CENTER, 0, -30);
-    lv_obj_set_style_opa(logo_obj, LV_OPA_TRANSP, LV_PART_MAIN);
+    lv_obj_align(logo_obj, LV_ALIGN_CENTER, 0, -25);
+    // SEM fade — opacidade total direto
 
+    // Banner vermelho — visível IMEDIATAMENTE
     banner = lv_obj_create(lv_scr_act());
     lv_obj_set_size(banner, scrWidth, 50);
     lv_obj_set_style_bg_color(banner, lv_color_hex(0xCC0000), LV_PART_MAIN);
     lv_obj_set_style_border_width(banner, 0, LV_PART_MAIN);
     lv_obj_set_style_radius(banner, 0, LV_PART_MAIN);
-    lv_obj_set_y(banner, 260);
-    lv_obj_add_flag(banner, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_align(banner, LV_ALIGN_BOTTOM_MID, 0, 0);
 
     banner_label = lv_label_create(banner);
     lv_label_set_text(banner_label, "NFX  RELES");
@@ -179,16 +180,8 @@ static void criar_interface() {
 }
 
 static void iniciar_boot_anim() {
-    lv_anim_t fade;
-    lv_anim_init(&fade);
-    lv_anim_set_var(&fade, logo_obj);
-    lv_anim_set_exec_cb(&fade, anim_opa_cb);
-    lv_anim_set_values(&fade, LV_OPA_TRANSP, LV_OPA_COVER);
-    lv_anim_set_time(&fade, 1200);
-    lv_anim_set_delay(&fade, 600);
-    lv_anim_set_path_cb(&fade, lv_anim_path_ease_in);
-    lv_anim_set_ready_cb(&fade, on_logo_fade_done);
-    lv_anim_start(&fade);
+    // Animação desligada por enquanto — exibe tudo direto
+    Serial.println("Interface estatica exibida. Logo + banner visiveis?");
 }
 
 // ========================================================
@@ -208,7 +201,7 @@ void setup() {
 
     // LVGL
     lv_init();
-    lv_disp_draw_buf_init(&draw_buf, buf, NULL, scrWidth * 16);
+    lv_disp_draw_buf_init(&draw_buf, buf, NULL, scrWidth * 40);
     lv_disp_drv_init(&disp_drv);
     disp_drv.hor_res = scrWidth;
     disp_drv.ver_res = scrHeight;
@@ -226,6 +219,7 @@ void setup() {
 // LOOP
 // ========================================================
 void loop() {
+    lv_tick_inc(5);              // avança o tick do LVGL
     lv_timer_handler();
     delay(5);
 }
