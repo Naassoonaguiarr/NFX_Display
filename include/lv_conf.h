@@ -10,6 +10,7 @@
 
 // --- Cor (16-bit RGB565) ---
 #define LV_COLOR_DEPTH      16
+#define LV_COLOR_16_SWAP    1     // Inverte bytes no ESP32 (little-endian → SPI big-endian)
 
 // --- Memória ---
 #define LV_MEM_SIZE         (48U * 1024U)
