@@ -48,10 +48,9 @@ public:
             cfg.panel_width  = 240;
             cfg.panel_height = 320;
             cfg.offset_rotation = 3;
-            cfg.rgb_order  = false;   // RGB normal (funcionou no teste simples)
+            cfg.rgb_order  = true;    // CYD precisa BGR (circulo vermelho = amarelo sem isso)
             cfg.invert     = false;
 #ifdef CYD_ST7789
-            cfg.rgb_order  = true;
             cfg.invert     = true;
 #endif
             _panel_instance.config(cfg);
@@ -118,7 +117,7 @@ static void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t
     uint32_t h = (area->y2 - area->y1 + 1);
     tft.startWrite();
     tft.setAddrWindow(area->x1, area->y1, w, h);
-    tft.pushPixels((uint16_t *)color_p, w * h);       // sem swap (rgb_order ja trata no panel)
+    tft.pushPixels((uint16_t *)color_p, w * h, true);  // swap bytes p/ SPI MSB-first
     tft.endWrite();
     lv_disp_flush_ready(disp);
 }
